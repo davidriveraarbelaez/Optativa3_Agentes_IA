@@ -28,3 +28,21 @@ uv add langchain langchain-google-genai langchain-community fastapi uvicorn pyth
 ```bash
 uv sync
 ```
+
+## API Key
+
+1. Ir a AIStudio de Google.
+2. Iniciar sesión con la cuenta de Google.
+3. Crear la API key.
+4. Copiar la API key.
+
+## Archivos del proyecto
+
+1. Crear un gitignore.
+2. Crear .env
+
+```javascript
+GOOGLE_API_KEY = Pegar la API Key de la sección anterior
+```
+
+3. Crear el script app.py
