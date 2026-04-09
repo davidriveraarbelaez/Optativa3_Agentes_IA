@@ -23,3 +23,8 @@ uv init --name first-agent-gemini
 ```bash
 uv add langchain langchain-google-genai langchain-community fastapi uvicorn python-dotenv
 ```
+
+4. Instalar todas las dependencias del paso anterior.
+```bash
+uv sync
+```
