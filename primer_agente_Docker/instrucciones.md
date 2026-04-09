@@ -18,3 +18,8 @@ pip install uv
 ```bash
 uv init --name first-agent-gemini
 ```
+
+3. Añadir todas las dependencias (uv crea el .env automáticamente).
+```bash
+uv add langchain langchain-google-genai langchain-community fastapi uvicorn python-dotenv
+```
