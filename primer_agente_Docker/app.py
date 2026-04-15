@@ -24,3 +24,32 @@ llm = ChatGoogleGenerativeAI(
     temperature=0.5,
     google_api_key=os.getenv("GOOGLE_API_KEY")
 )
+
+# Prompt para el agente
+prompt = ChatPromptTemplate.from_messages([
+    ("system", "Eres un asistente útil y preciso. Usa las herramientas cuando sea necesario."),
+    ("human", "{input}"),
+    ("placeholder", "{agent_scratchpad}")
+])
+
+# Crear el agente
+agent = create_tool_calling_agent(llm, tools, prompt)
+agent_executor = AgentExecutor(agent=agent, tools=tools, Verbose=True)
+
+# Endpoint para interactuar con el agente
+class Query(BaseModel):
+    pregunta: str
+
+@app.post("/agente")
+async def ejecutar_agente(query:Query):
+    resultado = agent_executor.invoke({"input": query.pregunta})
+    return {"respuesta": resultado["output"]}
+
+@app.get("/")
+async def root():
+    return {"mensaje": "¡Bienvenido a mi primer agente con FastAPI y Gemini!"}
+
+# Para ejecutar la aplicación, usa el comando: uvicorn app:app --reload
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)
