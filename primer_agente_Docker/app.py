@@ -2,7 +2,8 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.tools import tool
-from langchain.agents import create_tool_calling_agent, AgentExecutor
+from langchain.agents import create_agent
+from langchain_classic.agents import AgentExecutor
 from langchain_core.prompts import ChatPromptTemplate
 from dotenv import load_dotenv
 import os
@@ -20,7 +21,7 @@ tools = [multiplicar]
 
 # LLM Gemini
 llm = ChatGoogleGenerativeAI(
-    model="gemini-2.0-flash",
+    model="gemini-2.5-flash",
     temperature=0.5,
     google_api_key=os.getenv("GOOGLE_API_KEY")
 )
@@ -33,7 +34,11 @@ prompt = ChatPromptTemplate.from_messages([
 ])
 
 # Crear el agente
-agent = create_tool_calling_agent(llm, tools, prompt)
+agent = create_agent(
+    # llm, tools, prompt, agent_type="zero-shot-react-description"
+    llm,tools
+)
+
 agent_executor = AgentExecutor(agent=agent, tools=tools, Verbose=True)
 
 # Endpoint para interactuar con el agente
